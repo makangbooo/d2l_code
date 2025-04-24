@@ -39,3 +39,6 @@ k8s/prod/config/config.yaml
 k8s/uat/config/config.yaml
 
 !/arthas-packaging-3.7.1-bin/
+
+
+__pycache__/

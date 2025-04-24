@@ -1,8 +1,7 @@
 import random
 
 import torch
-from d2l import torch as d2l
-
+# 生成数据集包含特征和标签
 def synthetic_data(w, b, num_examples):
     """生成y=Xw+b+噪声"""
     X = torch.normal(0,1,(num_examples,len(w)))
@@ -10,9 +9,11 @@ def synthetic_data(w, b, num_examples):
     y += torch.normal(0, 0.01, y.shape) # 加上噪声
     return X, y.reshape((-1,1))
 
+# 真实结果
 true_w = torch.tensor([2, -3.4])
 true_b = 4.2
-features, labels = synthetic_data(true_w, true_b, 1000) # 生成1000个标签，一个标签两个特征
+
+features, labels = synthetic_data(true_w, true_b, 1000) # 生成 1000 条数据，一条数据包含两个特征和一个标签
 
 # 读取数据集
 def data_iter(batch_size, features, labels):
@@ -20,14 +21,12 @@ def data_iter(batch_size, features, labels):
     indices = list(range(num_examples))
     # 这些样本是随机读取的，没有特定的顺序
     random.shuffle(indices)
-    for i in range(0, num_examples, batch_size):
+    for i in range(0, num_examples, batch_size): # 例如，如果 num_examples=100 且 batch_size=20，那么 range 会生成 [0, 20, 40, 60, 80]。
         batch_indices = torch.tensor(
             indices[i: min(i + batch_size, num_examples)])
-        yield features[batch_indices], labels[batch_indices]
-
+        yield features[batch_indices], labels[batch_indices] # yield 是一个生成器，用于逐批返回数据，而不是一次性加载所有数据到内存中，节省内存。
 
 batch_size = 10
-
 # 初始化模型参数
 w = torch.normal(0, 0.01, size=(2,1), requires_grad=True)
 b = torch.zeros(1, requires_grad=True)

@@ -3,12 +3,14 @@ import torch
 from torch.utils import data
 from d2l import torch as d2l
 
-# 生成数据集
+# 真实结果
 true_w = torch.tensor([2, -3.4])
 true_b = 4.2
+
+# 生成数据集（features：特征，labels：特征的结果 ），（简单说就是生成x、y）
 features, labels = d2l.synthetic_data(true_w, true_b, 1000)
 
-# 读取数据集
+# 读取数据集（data_arrays:数据集，batch_size）
 def load_array(data_arrays, batch_size, is_train=True):  #@save
     """构造一个PyTorch数据迭代器"""
     dataset = data.TensorDataset(*data_arrays)
